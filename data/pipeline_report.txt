@@ -1,0 +1,33 @@
+=================================================================
+  SMART ACADEMIC TEXT PROCESSING - PIPELINE RESULTS
+  Dataset: NCERT Class 8 Science Textbook
+=================================================================
+
+Chapter                              Simp%  Summ% FK-Orig FK-Simp  ROUGE1
+-----------------------------------------------------------------
+Ch1: Exploring the Investigati      -19.1%  44.8%    6.72    8.68  0.8105
+Ch2: The Invisible Living Worl        5.2%  49.9%    9.67   10.48  0.8088
+Ch3: Health: The Ultimate Trea      -46.4%  37.5%   10.47    8.98  0.7247
+Ch4: Electricity: Magnetic and       16.8%  55.5%   11.66    7.46  0.7088
+Ch5: Exploring Forces               -19.7%  39.6%   10.14     4.5  0.6519
+Ch6: Pressure, Winds, Storms,       -24.4%  33.7%   17.27   16.72  0.7709
+Ch7: Particulate Nature of Mat       30.6%  68.3%    8.45    7.04  0.7559
+Ch8: Nature of Matter: Element      -17.6%  36.7%   12.95   12.27   0.672
+Ch9: The Amazing World of Solu       10.7%  58.5%   11.56    7.96  0.5275
+Ch10: Light: Mirrors and Lenses     -27.4%  47.6%   10.84    8.68   0.597
+Ch11: Keeping Time with the Ski      -6.7%  56.4%     5.8     5.4  0.8019
+Ch12: How Nature Works in Harmo     -14.5%  43.3%   10.72    9.07  0.5327
+Ch13: Our Home: Earth, a Unique     -13.2%  51.3%    7.71    4.78  0.8023
+-----------------------------------------------------------------
+AVERAGE                              -9.7%  47.9%    10.3    8.62   0.705
+=================================================================
+
+OVERALL SUMMARY:
+  Chapters processed       : 13
+  Avg simplification       : -9.7%
+  Avg summarization        : 47.9%
+  Avg FK grade (original)  : 10.3 (Undergraduate (Very Difficult))
+  Avg FK grade (simplified): 8.62 (Grade 10 (Difficult))
+  FK grade improvement     : -1.69 grades easier
+  Avg ROUGE-1 score        : 0.705
+  Total processing time    : 723.8s
