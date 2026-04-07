@@ -1,7 +1,5 @@
 # modules/summarization.py
 # Abstractive Summarization using BART-large-CNN
-# Direct model loading (no pipeline API)
-
 import re
 import torch
 from transformers import BartForConditionalGeneration, BartTokenizer
@@ -18,9 +16,11 @@ class TextSummarizer:
         print("Model loaded.")
 
     def _clean(self, text):
-        return re.sub(r'\s+', ' ', text).strip()
+        text = re.sub(r'\s+', ' ', text)
+        text = re.sub(r'[^\x20-\x7E]', ' ', text)
+        return text.strip()
 
-    def _chunk(self, text, size):
+    def _chunk(self, text, size=550):
         words = text.split()
         return [" ".join(words[i:i+size])
                 for i in range(0, len(words), size)]
@@ -39,7 +39,8 @@ class TextSummarizer:
                 min_length=min_len,
                 num_beams=4,
                 length_penalty=2.0,
-                early_stopping=True
+                early_stopping=True,
+                no_repeat_ngram_size=3,
             )
         return self.tokenizer.decode(
             output[0], skip_special_tokens=True)
@@ -49,10 +50,11 @@ class TextSummarizer:
         word_count = len(text.split())
 
         if word_count < 30:
-            return "Text too short. Please provide at least 30 words."
+            return ("Text too short. "
+                    "Please provide at least 30 words.")
 
-        max_len = max(60,  int(word_count * 0.35))
-        min_len = max(25,  int(word_count * 0.20))
+        max_len = max(80,  int(word_count * 0.45))
+        min_len = max(50,  int(word_count * 0.30))
 
         if word_count > 600:
             chunks = self._chunk(text, 550)
@@ -61,14 +63,25 @@ class TextSummarizer:
                 c_words = len(chunk.split())
                 part = self._generate(
                     chunk,
-                    max(60, int(c_words * 0.35)),
-                    max(25, int(c_words * 0.20))
+                    max(60, int(c_words * 0.45)),
+                    max(40, int(c_words * 0.30))
                 )
                 parts.append(part)
             combined = " ".join(parts)
-            return self._generate(combined, max_len, min_len)
+            final_words = len(combined.split())
+            return self._generate(
+                combined,
+                max(80, int(final_words * 0.50)),
+                max(50, int(final_words * 0.30))
+            )
 
         return self._generate(text, max_len, min_len)
+
+    def summarize_chapter(self, paragraphs):
+        if not paragraphs:
+            return "No content to summarize."
+        full_text = " ".join(paragraphs)
+        return self.summarize(full_text)
 
 
 if __name__ == "__main__":
@@ -79,6 +92,6 @@ if __name__ == "__main__":
     print(result)
     orig = len(text.split())
     summ = len(result.split())
-    print(f"\nOriginal words: {orig}")
-    print(f"Summary words : {summ}")
-    print(f"Compression   : {round((1 - summ/orig)*100, 1)}%")
+    print(f"\nOriginal : {orig} words")
+    print(f"Summary  : {summ} words")
+    print(f"Compression: {round((1-summ/orig)*100,1)}%")
