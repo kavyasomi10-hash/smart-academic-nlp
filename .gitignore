@@ -2,3 +2,6 @@ venv/
 __pycache__/
 *.pyc
 *.pyo
+data/ncert_class8_science.pdf
+data/pipeline_results.json
+IEEE papers/
