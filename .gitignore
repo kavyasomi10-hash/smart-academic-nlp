@@ -5,3 +5,4 @@ __pycache__/
 data/ncert_class8_science.pdf
 data/pipeline_results.json
 IEEE papers/
+data/ncert_dataset.json
